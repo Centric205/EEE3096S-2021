@@ -5,7 +5,7 @@
  * Further Modified By: Mark Njoroge 
  *
  * 
- * <STUDNUM_1> <STUDNUM_2>
+ * <MHRMOL003> <STUDNUM_2>
  * Date
 */
 
