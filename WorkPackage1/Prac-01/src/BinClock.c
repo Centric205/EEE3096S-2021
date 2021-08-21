@@ -6,7 +6,7 @@
  *
  * 
  * <MHRMOL003> <MDKTHE015>
- * Date
+ * Date 20 August 2021
 */
 
 #include <signal.h> //for catching signals
@@ -23,6 +23,10 @@ int hours, mins, secs;
 long lastInterruptTime = 0; //Used for button debounce
 int RTC; //Holds the RTC instance
 
+#define RED_LED 27
+#define LEFT_BUTTON 4
+#define RIGHT_BUTTON 5
+
 int HH,MM,SS;
 
 
@@ -32,7 +36,8 @@ void CleanUp(int sig){
 
 	//Set LED to low then input mode
 	//Logic here
-
+        digitalWrite(RED_LED, LOW);
+        pinMode(RED_LED, INPUT);
 
 	for (int j=0; j < sizeof(BTNS)/sizeof(BTNS[0]); j++) {
 		pinMode(BTNS[j],INPUT);
