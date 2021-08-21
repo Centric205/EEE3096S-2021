@@ -61,7 +61,8 @@ void initGPIO(void){
 	
 	//Set up the LED
 	//Write your Logic here
-
+        pinMode(RED_LED, OUTPUT);
+        digitalWrite(RED_LED, LOW);
 	
 	printf("LED and RTC done\n");
 	
