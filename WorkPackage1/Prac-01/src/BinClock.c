@@ -190,6 +190,12 @@ void hourInc(void){
 	long interruptTime = millis();
 
 	if (interruptTime - lastInterruptTime>200){
+		hours = wiringPiI2CReadReg8(RTC, HOUR_REGISTER);
+		hours = hexCompensation(hours);
+		hours = hours + 1;
+		hours = hFormat(hours);
+		hours = decCompensation(hours);
+		wiringPiI2CWriteReg(RTC, HOUR_REGISTER, hours);
 		printf("Interrupt 1 triggered, %x\n", hours);
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
