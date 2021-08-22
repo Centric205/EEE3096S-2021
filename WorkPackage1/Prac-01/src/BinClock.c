@@ -71,7 +71,7 @@ void initGPIO(void){
 	//Attach interrupts to Buttons
 	//Write your logic here
 	wiringPiISR(BTNS[0], INT_EDGE_BOTH, hourInc);
-	wiringPiIRS(BTNS[1], INT_EDGE_FALLING, minInc);
+	wiringPiISR(BTNS[1], INT_EDGE_FALLING, minInc);
 
 
 	printf("BTNS done\n");
@@ -195,7 +195,7 @@ void hourInc(void){
 		hours = hours + 1;
 		hours = hFormat(hours);
 		hours = decCompensation(hours);
-		wiringPiI2CWriteReg(RTC, HOUR_REGISTER, hours);
+		wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, hours);
 		printf("Interrupt 1 triggered, %x\n", hours);
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
@@ -221,11 +221,14 @@ void minInc(void){
 			if (mins - 59 == 0)
 			{ mins = 0;}
 			else
-			{ mins = mins - 59;}
+			{ mins = mins - 59;
+			  mins = decCompensation(mins);
+			  wiringPiI2CWriteReg8(RTC, MIN_REGISTER, mins);
+			}
 		}
 		else{
 			mins = decCompensation(mins);
-			wiringPiI2CWriteReg(RTC, MIN_REGISTER, mins);
+			wiringPiI2CWriteReg8(RTC, MIN_REGISTER, mins);
 		}
 		printf("Interrupt 2 triggered, %x\n", mins);
 		//Fetch RTC Time
@@ -271,7 +274,7 @@ void fetchCurrentTime(void){
 	mins = hexCompensation(mins);
 
 	// For seconds
-	secs = wiringPiI2CReadReg(RTC, SEC_REGISTER);
+	secs = wiringPiI2CReadReg8(RTC, SEC_REGISTER);
 	secs = hexCompensation(secs);
 }
 
@@ -279,6 +282,6 @@ void fetchCurrentTime(void){
 void toogleLED(void){
 	digitalWrite(LED, HIGH);
 	delay(1000);
-	digitalWite(LED, LOW);
-	delay(1000);
+	digitalWrite(LED, LOW);
+	//delay(1000);
 }
