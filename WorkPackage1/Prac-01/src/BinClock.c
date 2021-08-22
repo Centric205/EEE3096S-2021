@@ -258,3 +258,19 @@ void toggleTime(void){
 	}
 	lastInterruptTime = interruptTime;
 }
+
+// This function will fetch the current time from the RTC 
+void fetchCurrentTime(void){
+	// For Hours
+	hours = wiringPiI2CReadReg8(RTC, HOUR_REGISTER);
+	hours = hexCompensation(hours);
+	hours = hFormat(hours);
+
+	// For mins
+	mins = wiringPiI2CReadReg8(RTC, MIN_REGISTER);
+	mins = hexCompensation(mins);
+
+	// For seconds
+	secs = wiringPiI2CReadReg(RTC, SEC_REGISTER);
+	secs = hexCompensation(secs);
+}

@@ -15,16 +15,16 @@ void secPWM(int units);
 void hourInc(void);
 void minInc(void);
 void toggleTime(void);
-
+void fetchCurrentTime(void);
 // define constants
-const char RTCAddr = //Input RTC Address here 
+const char RTCAddr = 0x68 //Input RTC Address here 
 const char SEC_REGISTER = 0x00; // see register table in datasheet
 const char MIN_REGISTER = 0x01;
 const char HOUR_REGISTER = 0x02;
 const char TIMEZONE = 2; // +02H00 (RSA)
 
 // define pins
-const int LED = //CHoose your LED Pin here
+const int LED = 27 //CHoose your LED Pin here
 const int SECS = 1;
 const int BTNS[] = {5,30}; // B0, B1
 
