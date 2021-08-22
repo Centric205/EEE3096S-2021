@@ -16,6 +16,8 @@ void hourInc(void);
 void minInc(void);
 void toggleTime(void);
 void fetchCurrentTime(void);
+void toogleLED(void);
+
 // define constants
 const char RTCAddr = 0x68 //Input RTC Address here 
 const char SEC_REGISTER = 0x00; // see register table in datasheet

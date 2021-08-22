@@ -97,10 +97,10 @@ int main(void){
 	for (;;){
 		//Fetch the time from the RTC
 		//Write your logic here
-		
+		fetchCurrentTime();
 		//Toggle Seconds LED
 		//Write your logic here
-		
+		toogleLED();
 		// Print out the time we have stored on our RTC
 		printf("The current time is: %d:%d:%d\n", hours, mins, secs);
 
@@ -273,4 +273,12 @@ void fetchCurrentTime(void){
 	// For seconds
 	secs = wiringPiI2CReadReg(RTC, SEC_REGISTER);
 	secs = hexCompensation(secs);
+}
+
+// This functions turns LED on and off every second.
+void toogleLED(void){
+	digitalWrite(LED, HIGH);
+	delay(1000);
+	digitalWite(LED, LOW);
+	delay(1000);
 }
