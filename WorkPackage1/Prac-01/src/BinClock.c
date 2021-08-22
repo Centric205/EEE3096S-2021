@@ -23,10 +23,6 @@ int hours, mins, secs;
 long lastInterruptTime = 0; //Used for button debounce
 int RTC; //Holds the RTC instance
 
-#define RED_LED 27
-#define LEFT_BUTTON 4
-#define RIGHT_BUTTON 5
-
 int HH,MM,SS;
 
 
@@ -36,8 +32,8 @@ void CleanUp(int sig){
 
 	//Set LED to low then input mode
 	//Logic here
-        digitalWrite(RED_LED, LOW);
-        pinMode(RED_LED, INPUT);
+        digitalWrite(LED, LOW);
+        pinMode(LED, INPUT);
 
 	for (int j=0; j < sizeof(BTNS)/sizeof(BTNS[0]); j++) {
 		pinMode(BTNS[j],INPUT);
@@ -61,8 +57,8 @@ void initGPIO(void){
 	
 	//Set up the LED
 	//Write your Logic here
-        pinMode(RED_LED, OUTPUT);
-        digitalWrite(RED_LED, LOW);
+        pinMode(LED, OUTPUT);
+        digitalWrite(LED, LOW);
 	
 	printf("LED and RTC done\n");
 	
@@ -74,7 +70,8 @@ void initGPIO(void){
 	
 	//Attach interrupts to Buttons
 	//Write your logic here
-	
+	wiringPiISR(BTNS[0], INT_EDGE_BOTH, hourInc);
+	wiringPiIRS(BTNS[1], INT_EDGE_FALLING, minInc);
 
 
 	printf("BTNS done\n");
@@ -92,9 +89,9 @@ int main(void){
 
 	//Set random time (3:04PM)
 	//You can comment this file out later
-	wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, 0x13+TIMEZONE);
-	wiringPiI2CWriteReg8(RTC, MIN_REGISTER, 0x4);
-	wiringPiI2CWriteReg8(RTC, SEC_REGISTER, 0x00);
+	//wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, 0x13+TIMEZONE);
+	//wiringPiI2CWriteReg8(RTC, MIN_REGISTER, 0x4);
+	//wiringPiI2CWriteReg8(RTC, SEC_REGISTER, 0x00);
 	
 	// Repeat this until we shut down
 	for (;;){
