@@ -1,6 +1,6 @@
 #include "CHeterodyning_threaded.h"
 
-float result [SAMPLE_COUNT];
+double result [SAMPLE_COUNT];
 
 // This is each thread's "main" function.  It receives a unique ID
 void* Thread_Main(void* Parameter){
