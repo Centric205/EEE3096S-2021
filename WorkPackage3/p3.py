@@ -94,9 +94,17 @@ def setup():
 # Load high scores
 def fetch_scores():
     # get however many scores there are
-    score_count = None
+    score_count = eeprom.read_byte(0)
     # Get the scores
-    
+    global scores = []
+    for i in range(score_count):
+        scores.append(['name', 0])
+        letters = ""
+        for j in range(3):
+            letters += chr(eeprom.read_byte(4 + i*4 + j))
+        scores[i][0] = letters
+        scores[i][1] = eeprom.read_byte((i*4 + 3) + 4)
+
     # convert the codes back to ascii
     
     # return back the results
