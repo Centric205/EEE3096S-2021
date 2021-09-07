@@ -12,7 +12,7 @@ LED_value = [11, 13, 15]
 LED_accuracy = 32
 btn_submit = 16
 btn_increase = 18
-buzzer = None
+buzzer = 33
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
 
@@ -63,11 +63,32 @@ def display_scores(count, raw_data):
 
 # Setup Pins
 def setup():
+
+    global pwm_LED, pwm_Buzzer
+
     # Setup board mode
+    GPIO.setmode(GPIO.BOARD)
+
     # Setup regular GPIO
+    GPIO.setup(LED_value, GPIO.OUT)
+    GPIO.setup(LED_accuracy, GPIO.OUT)
+
+    GPIO.setup(btn_submit, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(btn_increase, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+    GPIO.setup(buzzer, GPIO.OUT)
+
     # Setup PWM channels
+    pwm_LED = GPIO.PWM(LED_accuracy, 10)  # OR 1000
+    pwm_LED.start(0)
+    pwm_Buzzer = GPIO.PWM(buzzer, 10)
+    pwm_Buzzer.start(50)
+
     # Setup debouncing and callbacks
-    pass
+    GPIO.add_event_detect(btn_submit, GPIO.RISING, callbacks=callback_function, bouncetime=295)
+    #GPIO.add_event_detect(btn_submit, GPIO.FALLING, callbacks=callback_function, bouncetime=295)
+    GPIO.add_event_detect(btn_increase, GPIO.RISING, callbacks=callback_function, bouncetime=295)
+    #GPIO.add_event_detect(btn_increase, GPIO.FALLING, callbacks=callback_function, bouncetime=295)
 
 
 # Load high scores
