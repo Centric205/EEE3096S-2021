@@ -113,11 +113,33 @@ def fetch_scores():
 
 # Save high scores
 def save_scores():
+
+    user_name = input("Enter your name: ")
+    if len(user_name) > 3:
+        user_name = user_name[:3]
+    
     # fetch scores
+    score_count, new_arr = fetch_scores()
+    score_count = score_count + 1
+
     # include new score
+    new_arr.append(["name", 0])
+    new_arr[score_count - 1][0] = user_name
+    new_arr[score_count - 1][1] = attempts  
+
     # sort
+    new_arr.sort(key=lambda x: x[1])
+
     # update total amount of scores
+    eeprom.write_byte(0, score_count)
+   
     # write new scores
+    new_arr_write = []
+    for content in new_arr:
+        for y in content[0]:
+            new_arr_write.append(ord(y))
+        new_arr_write.append(content[1])
+        eeprom.write_block(1, new_arr_write)
     pass
 
 
