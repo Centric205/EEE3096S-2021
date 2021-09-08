@@ -167,6 +167,26 @@ def btn_increase_pressed(channel):
 # Guess button
 def btn_guess_pressed(channel):
     # If they've pressed and held the button, clear up the GPIO and take them back to the menu screen
+    start_time = time.time()
+    buttonTime  = time.time() - start_time
+
+    if buttonTime < 1:
+        accuracy_leds()
+
+        if guess == value:
+            pwm_LED.stop()
+            pwm_Buzzer.stop()
+            GPIO.output(LED_accuracy, False)
+            GPIO.output(buzzer, False)
+            save_scores()
+        
+        else:
+            trigger_buzzer()
+    
+    else:
+        end_of_game = True
+        GPIO.output(LED_accuracy, False)
+        GPIO.output(buzzer, False)
     # Compare the actual value with the user value displayed on the LEDs
     # Change the PWM LED
     # if it's close enough, adjust the buzzer
@@ -196,6 +216,21 @@ def accuracy_leds():
 
 # Sound Buzzer
 def trigger_buzzer():
+
+    if abs(value - guess) == 3:
+        pwm_Buzzer.ChangeFrequency(1)
+        GPIO.output(buzzer, True)
+
+    if abs(value - guess) == 2:
+        pwm_Buzzer.ChangeFrequency(2)
+        GPIO.output(buzzer, True)
+
+    if abs(value - guess) == 1:
+        pwm_Buzzer.ChangeFrequency(4)
+        GPIO.output(buzzer, True)
+
+    else:
+        pass
     # The buzzer operates differently from the LED
     # While we want the brightness of the LED to change(duty cycle), we want the frequency of the buzzer to change
     # The buzzer duty cycle should be left at 50%
