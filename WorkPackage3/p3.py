@@ -150,6 +150,14 @@ def generate_number():
 
 # Increase button pressed
 def btn_increase_pressed(channel):
+    global guess
+    global attempts
+
+    attempts = attempts + 1
+    led_switch()   
+    guess += 1
+    if guess == 8:
+        guess = 0
     # Increase the value shown on the LEDs
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess
@@ -189,6 +197,30 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 2, the buzzer should sound twice every second
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
     pass
+
+def led_switch():
+    if guess == 0:
+        GPIO.output(LED_value, False)
+    elif guess == 1:
+        GPIO.output([11, 13], False)
+        GPIO.output(15, True)
+    elif guess == 2:
+        GPIO.output([11, 15], False)
+        GPIO.output(13, True)
+    elif guess == 3:
+        GPIO.output(11, False)
+        GPIO.output([13, 15], True)
+    elif guess == 4:
+        GPIO.output(11, True)
+        GPIO.output([13, 15], False)
+    elif guess == 5:
+        GPIO.output([11, 15], True)
+        GPIO.output(13, False)
+    elif guess == 6:
+        GPIO.output([11, 13], True)
+        GPIO.output(15, False)
+    elif guess == 7:
+        GPIO.output(LED_value, True)
 
 
 if __name__ == "__main__":
