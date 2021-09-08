@@ -154,7 +154,7 @@ def btn_increase_pressed(channel):
     global attempts
 
     attempts = attempts + 1
-    led_switch()   
+    LED_update()   
     guess += 1
     if guess == 8:
         guess = 0
@@ -182,6 +182,12 @@ def btn_guess_pressed(channel):
 
 # LED Brightness
 def accuracy_leds():
+    led_inp = (8 - guess)/(8 - value)*100
+    if (8 - guess) > (8 - value):
+        led_inp = 15
+    
+    pwm_LED.ChangeDutyCycle(led_inp)
+    GPIO.output(LED_accuracy, True)
     # Set the brightness of the LED based on how close the guess is to the answer
     # - The % brightness should be directly proportional to the % "closeness"
     # - For example if the answer is 6 and a user guesses 4, the brightness should be at 4/6*100 = 66%
@@ -198,7 +204,7 @@ def trigger_buzzer():
     # If the user is off by an absolute value of 1, the buzzer should sound 4 times a second
     pass
 
-def led_switch():
+def LED_update():
     if guess == 0:
         GPIO.output(LED_value, False)
     elif guess == 1:
