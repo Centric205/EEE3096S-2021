@@ -15,6 +15,13 @@ btn_increase = 18
 buzzer = 33
 eeprom = ES2EEPROMUtils.ES2EEPROM()
 
+attempts = 0
+value = 0
+
+# Extra needed global variables 
+increase_btn = False
+submit_btn = False
+
 
 # Print the game banner
 def welcome():
@@ -46,6 +53,18 @@ def menu():
         print("Press and hold the guess button to cancel your game")
         value = generate_number()
         while not end_of_game:
+            increase_btn = GPIO.input(btn_increase)
+            submit_btn = GPIO.input(btn_submit)
+
+            if increase_btn == False:
+                btn_guess_pressed(btn_increase)
+                sleep(1)
+            if submit_btn == False:
+                btn_increase_pressed(btn_submit)
+                sleep(1)
+
+        if end_of_game == True:
+            menu()
             pass
     elif option == "Q":
         print("Come back soon!")
@@ -96,7 +115,7 @@ def fetch_scores():
     # get however many scores there are
     score_count = eeprom.read_byte(0)
     # Get the scores
-    global scores = []
+    scores = []
     for i in range(score_count):
         scores.append(['name', 0])
         letters = ""
