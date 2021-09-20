@@ -22,6 +22,8 @@ value = 0
 increase_btn = False
 submit_btn = False
 
+def callback_function(channel):
+    print("falling edge detected.")
 
 # Print the game banner
 def welcome():
@@ -104,9 +106,9 @@ def setup():
     pwm_Buzzer.start(50)
 
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(btn_submit, GPIO.RISING, callbacks=callback_function, bouncetime=295)
+    GPIO.add_event_detect(btn_submit, GPIO.RISING, callback=callback_function, bouncetime=295)
     #GPIO.add_event_detect(btn_submit, GPIO.FALLING, callbacks=callback_function, bouncetime=295)
-    GPIO.add_event_detect(btn_increase, GPIO.RISING, callbacks=callback_function, bouncetime=295)
+    GPIO.add_event_detect(btn_increase, GPIO.RISING, callback=callback_function, bouncetime=295)
     #GPIO.add_event_detect(btn_increase, GPIO.FALLING, callbacks=callback_function, bouncetime=295)
 
 
@@ -120,9 +122,12 @@ def fetch_scores():
         scores.append(['name', 0])
         letters = ""
         for j in range(3):
+            print("j = ",j)
             letters += chr(eeprom.read_byte(4 + i*4 + j))
+            print(letters)
         scores[i][0] = letters
         scores[i][1] = eeprom.read_byte((i*4 + 3) + 4)
+        print(scores)
 
     # convert the codes back to ascii
     
